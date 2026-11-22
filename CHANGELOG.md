@@ -2,6 +2,11 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.4.1 — 2026-11-22
+
+- 替换 `docs/product/module-fishbone-diagram.png` 为六根骨齐全的版本。
+- 移除文档中关于下方三根骨标签被裁切的说明。
+
 ## v0.4.0 — 2026-11-22
 
 - 新增子模块索引类文档：`docs/product/module-fishbone.md`。按六个用户能力域划分功能，标注机制锚点与挂靠功能、复用机制和源码位置。
