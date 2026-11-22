@@ -29,6 +29,14 @@
 | [源码基线与复现](meta/sources.md) | 上游地址、界面版本、分析基线 commit、复现命令、API 一手文档链接。 |
 | [版本记录](CHANGELOG.md) | 每次同步的版本、日期与变更条目。 |
 
+## 学习交流
+
+本库已公开，用于一起学习和交流。欢迎围绕课程内容、源码原理和平台移植提问或补充材料。
+
+![DeepSeek Harness 学习群二维码](docs/community/wechat-group-qr.png)
+
+二维码是微信群邀请码，有效期至 2026-11-30。过期后需要更新群二维码，更新时替换 `docs/community/wechat-group-qr.png`。
+
 ## 证据基线速查
 
 三个版本并存，核对代码前先对齐：

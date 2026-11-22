@@ -2,6 +2,12 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.6.0 — 2026-11-23
+
+- 仓库可见性由私有改为公开，用于一起学习和交流。
+- README 新增「学习交流」章节，公开微信群二维码，注明有效期与更新方式。
+- 新增配图 `docs/community/wechat-group-qr.png`。`.gitignore` 精确放行该图。
+
 ## v0.5.0 — 2026-11-23
 
 - 新增课程讲义类文档：`docs/course/ten-lectures-outline.md`。三段 10 讲的目标、内容、时间估算、每讲节奏与验收标准。
