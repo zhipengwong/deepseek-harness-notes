@@ -2,6 +2,12 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.6.2 — 2026-11-23
+
+- 新增课程讲义类文档：`docs/course/lecture-0-practice.md`。记录 OpenRouter 免费模型的实测调用、原始返回、逐字段索引、责任链路与小测批改。
+- 新增配套配图：`docs/course/lecture-0-response-structure.png`、`docs/course/lecture-0-role-chain.png`。
+- README 资料索引新增实践篇条目。`.gitignore` 精确放行两张配图。
+
 ## v0.6.1 — 2026-11-23
 
 - README 新增「课程目标」章节。记录课程主线、三层目标与验收方式、零基础起点的展开方式，并链接课程大纲。
