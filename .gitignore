@@ -1,0 +1,21 @@
+# 上游源码
+deepseek-harness/
+
+# 截图与临时文件
+*.png
+*.jpg
+*.srt
+*.mp3
+.DS_Store
+
+# 编辑器与构建缓存
+.idea/
+.vscode/
+*.swp
+node_modules/
+__pycache__/
+
+# 未脱敏原始文档：文件名含这些关键词的一律忽略
+*产品功能地图*
+*核心代码研究报告*
+*教学规划*
