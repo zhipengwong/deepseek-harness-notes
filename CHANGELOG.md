@@ -2,6 +2,12 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.3.0 — 2026-11-22
+
+- 新增技术架构类文档：`docs/code/architecture-source-mapping.md`。逐层记录五层架构与源码文件行号的对应，含三条不变量、版本漂移表和复现命令。
+- 新增配套配图：`docs/code/architecture-layers.png`。
+- README 资料范围与索引新增技术架构条目。
+
 ## v0.2.1 — 2026-11-22
 
 - README 资料索引只保留已入库文档，移除未入库资料的登记条目。
