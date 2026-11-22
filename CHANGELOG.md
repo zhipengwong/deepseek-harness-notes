@@ -2,6 +2,13 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.5.0 — 2026-11-23
+
+- 新增课程讲义类文档：`docs/course/ten-lectures-outline.md`。三段 10 讲的目标、内容、时间估算、每讲节奏与验收标准。
+- 新增课程讲义类文档：`docs/course/lecture-0-llm-call.md`。裸调用与 Agent 循环的差别、`messages` 角色、`tool_calls` 结构化文本、可运行请求脚本与小测。
+- 新增配套配图：`docs/course/ten-lectures-outline.png`、`docs/course/lecture-0-call-vs-loop.png`。
+- `README.md` 资料范围与索引新增课程讲义条目。`AGENTS.md` 补入课程讲义目录映射。`.gitignore` 精确放行两张配图。
+
 ## v0.4.1 — 2026-11-22
 
 - 替换 `docs/product/module-fishbone-diagram.png` 为六根骨齐全的版本。

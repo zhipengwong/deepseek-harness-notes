@@ -11,6 +11,8 @@ deepseek-harness/
 # 例外：脱敏后的技术示意图
 !docs/code/architecture-layers.png
 !docs/product/module-fishbone-diagram.png
+!docs/course/ten-lectures-outline.png
+!docs/course/lecture-0-call-vs-loop.png
 
 # 编辑器与构建缓存
 .idea/

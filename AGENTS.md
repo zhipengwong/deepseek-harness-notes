@@ -22,6 +22,7 @@
 | 产品功能 | `docs/product/` | 中文标题，文件名用英文小写连字符 |
 | 技术架构 | `docs/code/` | 同上 |
 | 代码原理 | `docs/code/` | 同上 |
+| 课程讲义 | `docs/course/` | 同上 |
 | 版本演进 | `docs/evolution/` | 同上 |
 | 基线记录 | `meta/sources.md` | 固定 |
 
