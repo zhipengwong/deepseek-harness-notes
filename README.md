@@ -43,6 +43,7 @@
 | [10 讲：边学边搭自己的 Agent 骨架](docs/course/ten-lectures-outline.md) | 课程大纲。三段 10 讲的目标、内容、时间估算、每讲节奏和验收标准。 |
 | [第 0 讲：一次 LLM 调用的本质](docs/course/lecture-0-llm-call.md) | 第一讲讲义。裸调用、messages 三种角色、tool_calls、Agent 循环的差别，附可运行请求脚本和小测。 |
 | [第 0 讲实践篇](docs/course/lecture-0-practice.md) | 实测记录。用 OpenRouter 免费模型跑通一次调用，逐字段解读原始返回，含责任链路图与小测批改。 |
+| [第 1 讲：从单次调用到 Agent 循环](docs/course/lecture-1-agent-loop.md) | 第二讲讲义。循环五步、tools 清单、tool_calls 返回，附可离线运行的假模型脚本与真 API 对照。 |
 | [源码基线与复现](meta/sources.md) | 上游地址、界面版本、分析基线 commit、复现命令、API 一手文档链接。 |
 | [版本记录](CHANGELOG.md) | 每次同步的版本、日期与变更条目。 |
 
