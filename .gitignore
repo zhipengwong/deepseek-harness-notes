@@ -8,6 +8,9 @@ deepseek-harness/
 *.mp3
 .DS_Store
 
+# 例外：脱敏后的技术架构配图
+!docs/code/architecture-layers.png
+
 # 编辑器与构建缓存
 .idea/
 .vscode/
