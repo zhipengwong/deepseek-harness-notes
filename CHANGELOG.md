@@ -2,6 +2,12 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.4.0 — 2026-11-22
+
+- 新增子模块索引类文档：`docs/product/module-fishbone.md`。按六个用户能力域划分功能，标注机制锚点与挂靠功能、复用机制和源码位置。
+- 新增配套配图：`docs/product/module-fishbone-diagram.png`。
+- README 资料范围与索引新增子模块索引条目。
+
 ## v0.3.1 — 2026-11-22
 
 - 更新 `AGENTS.md`：目录映射补入技术架构类，明确脱敏技术示意图可作为配图入库。
