@@ -2,6 +2,10 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.8.9 — 2026-11-23
+
+- 新增第 3 讲配图 `docs/course/lecture-3-loop-layers.png`。图示三层嵌套循环（driver / turn / step）与唤醒入口，供第 3 讲讲义引用。`.gitignore` 精确放行该图。
+
 ## v0.8.8 — 2026-11-23
 
 - 统一标题格式。讲义用「第 N 讲：主题」，实践篇改为「第 N 讲：实践篇」，两者都以冒号分隔讲次与副标题。覆盖 README 索引三条链接、三篇实践篇的一级标题，以及讲义中对实践篇的一处引用。CHANGELOG 历史条目保留原样。
