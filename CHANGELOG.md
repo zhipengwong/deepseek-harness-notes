@@ -2,6 +2,12 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.8.11 — 2026-11-24
+
+- 新增代码原理专题 `docs/code/tool-invocation-lifecycle.md`。把工具从注册到回灌的问答整理成完整链路：工具来源、缺工具的三种情况、模型侧四条决策路径、本地与运行时检索，以及并发调度、执行前审批、失败重试、上下文压缩、取消重放五个关键问题，收束于 waterfall 主线与平台取舍表。
+- 新增配图 `docs/code/tool-lifecycle-five-questions.png`（五个关键问题对照卡片，脱敏技术示意图），`.gitignore` 精确放行；图后附文字对照表以弥补深色主题下文字偏暗。
+- README 资料索引补该专题一行。
+
 ## v0.8.10 — 2026-11-24
 
 - 新增第 3 讲讲义 `lecture-3-agent-loop.md` 与实践篇 `lecture-3-practice.md`。讲义讲三层循环、数据判定终止、max-tokens 粘性、日志投影与取消语义，引用已入库的 `lecture-3-loop-layers.png`；实践篇记录最小会话驱动器四场景实测、小测四题批改（两题重答、一题补动机）与验收。

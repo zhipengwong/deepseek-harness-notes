@@ -41,6 +41,7 @@
 | [产品功能地图](docs/product/feature-map.md) | Web 端截图整理的功能清单。含新会话控件、模式、斜杠指令、权限、插件页、自动化任务字段与源码位置对照。 |
 | [子模块鱼骨大纲](docs/product/module-fishbone.md) | 按六个用户能力域划分的功能索引。每个功能标注机制锚点或挂靠功能、复用机制与源码位置。 |
 | [技术架构与源码对应](docs/code/architecture-source-mapping.md) | 配置层、运行时层、调度层、能力层、边界层的逐层源码对应。含三条不变量、版本漂移表和复现命令。 |
+| [工具调用链路：五个关键问题](docs/code/tool-invocation-lifecycle.md) | 代码原理专题。工具从注册到回灌的完整链路：工具从哪来、缺工具怎么办、模型决策逻辑、检索方法，以及并发、审批、重试、压缩、重放五个关键问题与 waterfall 主线。 |
 | [10 讲：边学边搭自己的 Agent 骨架](docs/course/ten-lectures-outline.md) | 课程大纲。三段 10 讲的目标、内容、时间估算、每讲节奏和验收标准。 |
 | [第 0 讲：一次 LLM 调用的本质](docs/course/lecture-0-llm-call.md) | 第一讲讲义。裸调用、messages 三种角色、tool_calls、Agent 循环的差别，附可运行请求脚本和小测。 |
 | [第 0 讲：实践篇](docs/course/lecture-0-practice.md) | 实测记录。用 OpenRouter 免费模型跑通一次调用，逐字段解读原始返回，含责任链路图与小测批改。 |
