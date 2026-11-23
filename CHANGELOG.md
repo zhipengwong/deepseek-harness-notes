@@ -2,6 +2,16 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.8.4 — 2026-11-23
+
+- 整理 README 资料索引。第 1 讲的四个代码条目与报文样本从主索引移除，代码链接收进第 1 讲实践篇开头的文件表，保持目录索引整洁。
+
+## v0.8.3 — 2026-11-23
+
+- 新增第 2 讲讲义 `docs/course/lecture-2-plugin.md`。讲插件化解决什么问题、三种插件形态、ctx 与 fiber、effect 与 disposer、五种事件派发、上游源码落点与平台取舍，附四道小测。
+- 新增第 2 讲代码 `mini-harness/lecture-2/plugin_core.py` 与 `demo.py`。最小插件框架，实现注册、六态生命周期、effect 逆序清理、事件广播与 waterfall 拦截，已实测运行通过。
+- README 索引新增第 2 讲讲义与代码条目。
+
 ## v0.8.2 — 2026-11-23
 
 - 新增第 1 讲实践篇 `docs/course/lecture-1-practice.md`。记录三阶段脚本的实测过程、tool_calls 返回形状、两轮真 API 报文、三版对照、小测批改与验收记录。

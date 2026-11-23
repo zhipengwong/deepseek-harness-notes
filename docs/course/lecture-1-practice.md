@@ -2,14 +2,15 @@
 
 本文记录第 1 讲的动手过程。目标是把一次调用扩展成 Agent 循环，先离线看清结构，再用真实模型跑通，最后用小测验证理解。讲义讲机制，这篇讲实测。
 
-代码在 `mini-harness/lecture-1/`，共四个文件，按练习顺序排列。
+代码在 `mini-harness/lecture-1/`，共五个文件，按练习顺序排列。
 
 | 文件 | 用途 |
 |---|---|
-| `agent_loop.py` | 假模型示例。纯内存，不联网，不需要 key。 |
-| `a.txt` | 示例数据，内容一行 `hello from real file`。 |
-| `agent_loop_real.py` | 真实 I/O 对照版。真的读文件，模型回复取工具结果。 |
-| `agent_loop_api.py` | 真 API 版。接 OpenRouter 模型，逐轮打印原始报文。 |
+| [agent_loop.py](../../mini-harness/lecture-1/agent_loop.py) | 假模型示例。纯内存，不联网，不需要 key。 |
+| [a.txt](../../mini-harness/lecture-1/a.txt) | 示例数据，内容一行 `hello from real file`。 |
+| [agent_loop_real.py](../../mini-harness/lecture-1/agent_loop_real.py) | 真实 I/O 对照版。真的读文件，模型回复取工具结果。 |
+| [agent_loop_api.py](../../mini-harness/lecture-1/agent_loop_api.py) | 真 API 版。接 OpenRouter 模型，逐轮打印原始报文。 |
+| [api-run-sample.log](../../mini-harness/lecture-1/api-run-sample.log) | 真 API 两轮循环的原始报文日志。含 tool_calls 返回、tool 消息回灌与 token 增长，key 已遮蔽。 |
 
 ## 循环多出来的五个动作
 
