@@ -46,7 +46,8 @@
 | [第 0 讲实践篇](docs/course/lecture-0-practice.md) | 实测记录。用 OpenRouter 免费模型跑通一次调用，逐字段解读原始返回，含责任链路图与小测批改。 |
 | [第 1 讲：从单次调用到 Agent 循环](docs/course/lecture-1-agent-loop.md) | 第二讲讲义。循环五步、tools 清单、tool_calls 返回，附可离线运行的假模型脚本与真 API 对照。 |
 | [第 1 讲实践篇](docs/course/lecture-1-practice.md) | 实测记录。三阶段脚本从假模型到真 I/O 再到真 API，含两轮报文、tool_call_id 配对图、小测批改与验收。代码与报文样本的链接见该篇开头。 |
-| [第 2 讲：插件化，一切皆插件](docs/course/lecture-2-plugin.md) | 第三段机制篇第一讲。插件三形态、ctx 与 fiber、effect 与 disposer、五种事件派发，含上游源码落点与平台取舍。 |
+| [第 2 讲：插件化，一切皆插件](docs/course/lecture-2-plugin.md) | 第三段机制篇第一讲。插件三形态、ctx 与 fiber、effect 与 disposer、五种事件派发的使用场景与配图、上游源码落点与平台取舍。 |
+| [第 2 讲实践篇](docs/course/lecture-2-practice.md) | 实测记录。任务 1-3 与选做的实测输出、effect 逆序清理的两层验证、waterfall 吞链三场景对照、小测批改与验收。任务代码链接见该篇开头。 |
 | [mini-harness 第 2 讲代码](mini-harness/lecture-2/plugin_core.py) | 最小插件框架，含 FiberState、Fiber、Context、App。配套 `demo.py` 演示注册、卸载、事件与 waterfall，离线可运行。 |
 | [源码基线与复现](meta/sources.md) | 上游地址、界面版本、分析基线 commit、复现命令、API 一手文档链接。 |
 | [版本记录](CHANGELOG.md) | 每次同步的版本、日期与变更条目。 |

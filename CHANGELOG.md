@@ -2,6 +2,19 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.8.6 — 2026-11-23
+
+- 新增第 2 讲实践篇 `docs/course/lecture-2-practice.md`。记录任务 1-3 与选做的实测输出：echoer 插件零内核改动收到事件、卸载自动撤销监听、effect 逆序清理的两层验证（子先父后 + 注册逆序）、waterfall 不调 `next()` 的三场景对照，含小测批改与验收记录。
+- 新增任务代码 `mini-harness/lecture-2/demo_task2.py`（事件自动注册与卸载撤销）与 `demo_task4.py`（waterfall 吞链实验）。`demo.py` 的 greeter 增加第二个 effect 用于逆序清理验证。
+- 第 2 讲讲义的实测输出块同步任务 3 后的现状，补「启动计时器」「停止计时器」两行，卸载要点改为逆序清理表述；「移植到骨架」一节补实践篇指引。
+- README 索引新增第 2 讲实践篇条目。
+
+## v0.8.5 — 2026-11-23
+
+- 第 2 讲讲义新增「五种方式的使用场景」一节。用 emit、parallel、serial、bail、waterfall 配一张对比图，逐种说明典型场景与判断标准，附上游真实事件用例和 bail 的事实边界。
+- 新增配图 `docs/course/lecture-2-dispatch-modes.svg`。SVG 矢量图，GitHub 原生渲染，不在 .gitignore 忽略范围。
+- 本讲小测新增第 5 题，考派发方式的选择判断。
+
 ## v0.8.4 — 2026-11-23
 
 - 整理 README 资料索引。第 1 讲的四个代码条目与报文样本从主索引移除，代码链接收进第 1 讲实践篇开头的文件表，保持目录索引整洁。

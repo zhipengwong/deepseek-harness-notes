@@ -1,0 +1,47 @@
+<svg width="1360" height="884" viewBox="0 0 680 442" xmlns="http://www.w3.org/2000/svg">
+<title>五种事件派发方式的行为差异与典型使用场景</title>
+<desc>对照 emit、parallel、serial、bail、waterfall 的执行行为、返回值规则和上游真实事件用例。</desc>
+<rect x="0" y="0" width="680" height="442" fill="#FFFFFF"/>
+<g font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+<text x="40" y="44" font-size="15" font-weight="500" fill="#2C2C2A">五种派发方式：行为差异决定使用场景</text>
+<text x="54" y="70" font-size="12" fill="#5F5E5A">方式</text>
+<text x="210" y="70" font-size="12" fill="#5F5E5A">行为与返回值</text>
+<text x="454" y="70" font-size="12" fill="#5F5E5A">上游真实用例</text>
+
+<rect x="40" y="86" width="600" height="52" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
+<text x="54" y="106" font-size="14" font-weight="500" fill="#2C2C2A" dominant-baseline="central">emit</text>
+<text x="54" y="123" font-family="'SFMono-Regular', Menlo, monospace" font-size="12" fill="#5F5E5A" dominant-baseline="central">ctx.emit(...)</text>
+<text x="210" y="112" font-size="13" fill="#2C2C2A" dominant-baseline="central">同步广播，不等也不收返回值</text>
+<text x="454" y="106" font-size="12" fill="#2C2C2A" dominant-baseline="central">agent/status</text>
+<text x="454" y="123" font-size="12" fill="#5F5E5A" dominant-baseline="central">inbox/inserted、流式帧</text>
+
+<rect x="40" y="142" width="600" height="52" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
+<text x="54" y="162" font-size="14" font-weight="500" fill="#2C2C2A" dominant-baseline="central">parallel</text>
+<text x="54" y="179" font-family="'SFMono-Regular', Menlo, monospace" font-size="12" fill="#5F5E5A" dominant-baseline="central">await ctx.parallel(...)</text>
+<text x="210" y="168" font-size="13" fill="#2C2C2A" dominant-baseline="central">监听器并发跑，一起等待收齐</text>
+<text x="454" y="168" font-size="12" fill="#2C2C2A" dominant-baseline="central">plugin-manager/operation</text>
+
+<rect x="40" y="198" width="600" height="52" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
+<text x="54" y="218" font-size="14" font-weight="500" fill="#2C2C2A" dominant-baseline="central">serial</text>
+<text x="54" y="235" font-family="'SFMono-Regular', Menlo, monospace" font-size="12" fill="#5F5E5A" dominant-baseline="central">await ctx.serial(...)</text>
+<text x="210" y="224" font-size="13" fill="#2C2C2A" dominant-baseline="central">按序 await，首个非空值胜出停后续</text>
+<text x="454" y="218" font-size="12" fill="#2C2C2A" dominant-baseline="central">agent/created 初始化</text>
+<text x="454" y="235" font-size="12" fill="#5F5E5A" dominant-baseline="central">agent/turn-stopping</text>
+
+<rect x="40" y="254" width="600" height="52" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
+<text x="54" y="274" font-size="14" font-weight="500" fill="#2C2C2A" dominant-baseline="central">bail</text>
+<text x="54" y="291" font-family="'SFMono-Regular', Menlo, monospace" font-size="12" fill="#5F5E5A" dominant-baseline="central">ctx.bail(...)</text>
+<text x="210" y="280" font-size="13" fill="#2C2C2A" dominant-baseline="central">serial 的同步版，即时取首个值</text>
+<text x="454" y="280" font-size="12" fill="#2C2C2A" dominant-baseline="central">同步抢占判定</text>
+
+<rect x="40" y="310" width="600" height="52" rx="8" fill="#E6F1FB" stroke="#85B7EB" stroke-width="0.5"/>
+<text x="54" y="330" font-size="14" font-weight="500" fill="#0C447C" dominant-baseline="central">waterfall</text>
+<text x="54" y="347" font-family="'SFMono-Regular', Menlo, monospace" font-size="12" fill="#0C447C" dominant-baseline="central">ctx.waterfall(..., next)</text>
+<text x="210" y="336" font-size="13" fill="#2C2C2A" dominant-baseline="central">链式 next，可改写结果或短路否决</text>
+<text x="454" y="330" font-size="12" fill="#2C2C2A" dominant-baseline="central">agent/pre-step</text>
+<text x="454" y="347" font-size="12" fill="#5F5E5A" dominant-baseline="central">approval/request</text>
+
+<rect x="40" y="378" width="600" height="44" rx="8" fill="#FAEEDA" stroke="#FAC775" stroke-width="0.5"/>
+<text x="54" y="400" font-size="13" fill="#2C2C2A" dominant-baseline="central">纪律：只观察或标注的 waterfall 监听器必须调用 next()，否则静默吞掉整条下游链。</text>
+</g>
+</svg>

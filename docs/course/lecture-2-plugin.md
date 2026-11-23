@@ -69,6 +69,34 @@ ctx.effect(setup)
 
 有一条纪律：只观察或标注的监听器必须调用 `next()`。忘了调用会静默吞掉整条下游链路。
 
+### 五种方式的使用场景
+
+![五种派发方式的行为差异与典型场景](lecture-2-dispatch-modes.svg)
+
+选择派发方式时依次问两个问题。第一，要不要返回值。第二，要返回值时，多个监听器是争抢还是协作。答案决定用哪一种。
+
+| 方式 | 典型场景 | 判断标准 |
+|---|---|---|
+| `emit` | 状态播报、审计日志、流式帧推送 | 只是告知，没有监听器需要拿结果影响主流程 |
+| `parallel` | 多个互不依赖的监听器都要完成 | 要等所有人做完，顺序无所谓，结果互不覆盖 |
+| `serial` | 有序初始化、认领式处理 | 依赖顺序，或第一个给出有效结果的监听器负责处理 |
+| `bail` | 同步权限检查、同步配置命中 | 不能等待的同步路径，且只需首个有效值 |
+| `waterfall` | 拦截、包装、策略接管 | 一个决定需要多层加工，或某个插件要能拦下请求自行作答 |
+
+`emit` 的监听器同步执行一遍。返回的 Promise 和值都不等待、不收集。上游的 `agent/status` 播报状态翻转，`agent/inbox/inserted` 播报消息进入收件箱，`agent/assistant-stream` 发布流式帧，三者都标注为 `emit`。
+
+`parallel` 并发运行全部监听器，`await` 后一起等待完成。上游的 `plugin-manager/operation` 用它，让多个订阅者独立响应一次管理调用。
+
+`serial` 按序 `await`。第一个返回非 `null`、`false`、`undefined` 的监听器胜出，后续不再执行。它适合两类场景。一类是有序初始化，例如 `agent/created` 按顺序完成所有监听器后才 resolve，其中一个抛错就使创建失败并跳过后续。另一类是认领式处理，按序询问谁能处理，谁先接住谁负责。
+
+`bail` 是 `serial` 的同步版本。行为相同，但不返回 Promise，用于不能等待的同步路径。
+
+`waterfall` 把请求交给一条链。监听器收到当前值和 `next()`。调用 `next()` 时，请求进入下游，监听器拿到返回值后可再加工。不调用 `next()` 就直接返回时，下游和默认值都不执行，这叫否决。上游的 `agent/pre-step` 用它拒绝某一步或替换进入步骤的消息，`approval/request` 用它让策略插件代替用户给出审批结果，`agent/request-error` 用它让监听器接管失败恢复或委派给下游。
+
+有一处事实边界要说明。`bail` 的适用场景由语义推出。本次查阅的上游子系统文档里，没有找到标注为 `bail` 的具体事件。其余四种的用例都能在源码标注或教程中定位。
+
+记住一句话。只通知用 `emit`，都要做用 `parallel`，抢着做用 `serial`，同步抢用 `bail`，要加工或拦截用 `waterfall`。
+
 ## 上游源码落点
 
 本节的事实来自本地源码副本（alpha.2，commit `4b399c39`）。
@@ -93,6 +121,8 @@ ctx.effect(setup)
 | `plugin_core.py` | 最小框架。`FiberState`、`Fiber`、`Context`、`App` 四个类。 |
 | `demo.py` | 演示插件。加载、事件广播、waterfall 拦截、卸载。 |
 
+动手任务扩展代码 `demo_task2.py` 与 `demo_task4.py` 的实测见第 2 讲实践篇。
+
 运行：
 
 ```bash
@@ -107,6 +137,7 @@ python3 demo.py
 [加载] greeter
   [heartbeat] 启动定时器
   [greeter] 打开连接
+  [greeter] 启动计时器
 [加载] shouter
 
 === 事件广播 emit ===
@@ -120,6 +151,7 @@ python3 demo.py
 === 卸载主插件（子插件随父一起）===
   greeter 卸载前状态: ACTIVE
   [heartbeat] 清理定时器
+  [greeter] 停止计时器
   [greeter] 关闭连接
   greeter 卸载后状态: DISPOSED
 
@@ -133,7 +165,7 @@ python3 demo.py
 
 第二，`render('blocked words')` 返回 `** VETO **`。第二个监听器短路了，没有调用 `next()`，默认值没执行。但第一个监听器仍在返回路上做了大写，所以结果是 `** VETO **` 而不是 `** veto **`。短路只截断下游，不跳过已经在外层的加工。
 
-第三，卸载 `greeter` 时，先清理子插件 `heartbeat` 的定时器，再关闭 `greeter` 自己的连接。子插件随父卸载，不用单独记。
+第三，卸载 `greeter` 时，先清理子插件 `heartbeat` 的定时器，再按注册逆序清理 greeter 自己的两个 effect：先停后启动的计时器，再关先打开的连接。子插件随父卸载，不用单独记。
 
 第四，卸载后再发 `greet`，只有 `shouter` 收到。`greeter` 的监听器随 fiber 一起被移除。这是 effect 自动撤销的可见证据。
 
@@ -164,6 +196,7 @@ python3 demo.py
 2. `ctx.effect()` 的作用是什么？为什么外部资源要包起来？
 3. fiber 卸载时，子插件和清理函数的执行顺序是什么？
 4. waterfall 监听器不调用 `next()` 会发生什么？这条纪律为什么重要？
+5. `approval/request` 为什么用 waterfall，而不用 serial？提示：策略插件要代替用户作答，需要的是首个胜出，还是决定返回什么？
 
 ## 事实边界
 

@@ -25,6 +25,16 @@ def greeter(ctx):
         return cleanup
     ctx.effect(setup)
 
+    # 任务 3：第二个 effect。验证两点：
+    #   1) 卸载时它的清理函数也会执行；
+    #   2) 多个 effect 逆序清理（后打开的先关闭，像栈一样）。
+    def setup_timer():
+        print("  [greeter] 启动计时器")
+        def cleanup_timer():
+            print("  [greeter] 停止计时器")
+        return cleanup_timer
+    ctx.effect(setup_timer)
+
     ctx.on("greet", lambda name: print(f"  [greeter] 收到 greet: {name}"))
 
 
