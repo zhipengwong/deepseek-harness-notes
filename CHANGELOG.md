@@ -2,6 +2,12 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.7.0 — 2026-11-23
+
+- 仓库范围扩展：从只存文档改为文档与课程代码一同入库。新增 `mini-harness/` 代码目录。
+- 迁入第 1 讲假模型示例 `mini-harness/lecture-1/agent_loop.py`，可离线运行，已实测通过。
+- `AGENTS.md` 更新入库范围、目录映射与提交类型（新增 `feat`）。README 课程目标、资料范围与索引新增代码条目。
+
 ## v0.6.4 — 2026-11-23
 
 - 新增课程讲义 `docs/course/lecture-1-agent-loop.md`。讲循环五步、tools 清单与 tool_calls 返回，附可离线运行的假模型脚本和 OpenRouter 真 API 对照。脚本已实际运行验证。

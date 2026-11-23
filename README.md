@@ -1,10 +1,10 @@
 # DeepSeek Harness 学习资料库
 
-记录 DeepSeek Harness（DSH）的产品功能、代码原理与版本演进。这个库只存研究文档，不存上游源码。
+记录 DeepSeek Harness（DSH）的产品功能、代码原理与版本演进，并保存边学边搭的 mini-harness 课程代码。研究文档与课程代码都入库，不存上游源码。
 
 ## 课程目标
 
-课程主线是边学边搭一个能跑的最小 Agent 骨架，称为 mini-harness。DSH 只作参照实现，不是照抄目标。每学一个机制，就往自己的骨架里加一块。课程结束时有两份产出：理解 DSH 的设计取舍，以及一个自己写的、能跑通的 Agent 骨架。
+课程主线是边学边搭一个能跑的最小 Agent 骨架，称为 mini-harness。DSH 只作参照实现，不是照抄目标。每学一个机制，就往自己的骨架里加一块。骨架代码放在 `mini-harness/`，与讲义一同入库，可下载运行。课程结束时有两份产出：理解 DSH 的设计取舍，以及一个自己写的、能跑通的 Agent 骨架。
 
 课程分三层，目标是第三层。
 
@@ -26,6 +26,7 @@
 | 子模块索引 | 按用户能力域划分的鱼骨大纲，功能到机制的映射 | `docs/product/` |
 | 技术架构 | 五层架构与源码文件行号的逐层对应，含版本漂移 | `docs/code/` |
 | 课程讲义 | 从零搭建 Agent 骨架的课程大纲与逐讲讲义 | `docs/course/` |
+| 课程代码 | 边学边搭的 mini-harness，按讲序号分目录，可离线运行 | `mini-harness/` |
 | 源码基线 | 研究时对应的上游 commit 与复现命令 | `meta/sources.md` |
 | 版本记录 | 每次同步的变更与标签 | `CHANGELOG.md` |
 
@@ -44,6 +45,7 @@
 | [第 0 讲：一次 LLM 调用的本质](docs/course/lecture-0-llm-call.md) | 第一讲讲义。裸调用、messages 三种角色、tool_calls、Agent 循环的差别，附可运行请求脚本和小测。 |
 | [第 0 讲实践篇](docs/course/lecture-0-practice.md) | 实测记录。用 OpenRouter 免费模型跑通一次调用，逐字段解读原始返回，含责任链路图与小测批改。 |
 | [第 1 讲：从单次调用到 Agent 循环](docs/course/lecture-1-agent-loop.md) | 第二讲讲义。循环五步、tools 清单、tool_calls 返回，附可离线运行的假模型脚本与真 API 对照。 |
+| [mini-harness 第 1 讲代码](mini-harness/lecture-1/agent_loop.py) | 讲义配套的假模型示例，不联网、不需要 key。运行 `python3 agent_loop.py` 观察两轮循环。 |
 | [源码基线与复现](meta/sources.md) | 上游地址、界面版本、分析基线 commit、复现命令、API 一手文档链接。 |
 | [版本记录](CHANGELOG.md) | 每次同步的版本、日期与变更条目。 |
 
