@@ -2,6 +2,12 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.8.2 — 2026-11-23
+
+- 新增第 1 讲实践篇 `docs/course/lecture-1-practice.md`。记录三阶段脚本的实测过程、tool_calls 返回形状、两轮真 API 报文、三版对照、小测批改与验收记录。
+- 新增配图 `docs/course/lecture-1-tool-call-id-pairing.png`，说明多个 tool_calls 靠 id 配对回灌结果。
+- README 索引新增第 1 讲实践篇条目，`.gitignore` 精确放行配图。
+
 ## v0.8.1 — 2026-11-23
 
 - 第 1 讲讲义的「本讲小测」改为「小测与批改」逐题结构。四题各含题目、正确答案、当时的回答与判定，附批改说明。
