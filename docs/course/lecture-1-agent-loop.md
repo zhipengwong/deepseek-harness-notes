@@ -235,14 +235,32 @@ def real_chat(messages, tools=None):
 
 真模型不一定按假模型的轮次返回。它可能第一轮就说话，也可能连续要求调用多个工具。循环代码要能处理这两种情况。`while True` 配 `finish_reason` 判断，正好覆盖。
 
+## a.txt 在哪里
+
+代码里的 `a.txt` 最初只是一个字符串。它出现在假模型的 `arguments` 里，被 `execute_tool` 解出，但函数直接返回写死的 `hello`，没有调用 `open()`。仓库里当时并不存在这个文件。文件没有被读，这正是第 0 讲那条认知在演示代码里的延续。
+
+课程代码目录现已补上真实文件 `mini-harness/lecture-1/a.txt`，内容是一行 `hello from real file`。同时提供对照脚本 `agent_loop_real.py`。两个脚本的唯一区别在 `execute_tool`，对照版真的打开并读取文件。
+
+```
+原版 agent_loop.py        return "hello"              写死的返回值
+对照版 agent_loop_real.py open(path).read()           真实读取 a.txt
+```
+
+两版实测输出只有一行不同。原版显示「结果：hello」，对照版显示「结果：hello from real file」。这行差异证明程序这次真的碰了磁盘。其余输出一致，包括五条 `messages` 的结构。
+
+对照版把相对路径按脚本所在目录解析，避免运行目录不同导致找不到文件。
+
+一个需要注意的局限。对照版第二轮的模型回复仍是预设的「a.txt 的内容是：hello」，没有变成真实读到的内容。原因是假模型按轮次返回固定文本，不读取工具结果。真实模型会读。这正是第 1 讲末尾换成 `real_chat` 的意义所在。
+
 ## 动手任务
 
-1. 保存脚本为 `agent_loop.py`，运行一次，确认输出与本讲一致。
-2. 在 `agent_loop` 结尾打印完整 `messages`，数出五条消息。
-3. 把 `execute_tool` 改成真的读文件。用 Python 打开文件，返回内容。
-4. 选做：换成 `real_chat`，用免费模型跑一次，观察真模型的 `finish_reason`。
+1. 运行 `mini-harness/lecture-1/agent_loop.py`，确认输出与本讲一致。
+2. 在脚本结尾打印完整 `messages`，数出五条消息。
+3. 运行 `agent_loop_real.py`，对比它与原版的输出差异，确认真实文件读取生效。
+4. 选做：删掉 `a.txt` 再运行对照版，观察 `FileNotFoundError`，确认报错来自真实的 `open()`。
+5. 选做：换成 `real_chat`，用免费模型跑一次，观察真模型的 `finish_reason`。
 
-任务 1 到 3 不需要网络。任务 4 需要 key 和可用模型。
+任务 1 到 4 不需要网络。任务 5 需要 key 和可用模型。
 
 ## 本讲小测
 

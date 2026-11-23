@@ -46,6 +46,7 @@
 | [第 0 讲实践篇](docs/course/lecture-0-practice.md) | 实测记录。用 OpenRouter 免费模型跑通一次调用，逐字段解读原始返回，含责任链路图与小测批改。 |
 | [第 1 讲：从单次调用到 Agent 循环](docs/course/lecture-1-agent-loop.md) | 第二讲讲义。循环五步、tools 清单、tool_calls 返回，附可离线运行的假模型脚本与真 API 对照。 |
 | [mini-harness 第 1 讲代码](mini-harness/lecture-1/agent_loop.py) | 讲义配套的假模型示例，不联网、不需要 key。运行 `python3 agent_loop.py` 观察两轮循环。 |
+| [真实 I/O 对照版](mini-harness/lecture-1/agent_loop_real.py) | 与原版仅 `execute_tool` 不同，真实读取同目录的 `a.txt`。对照两版输出可见文件确实被读。 |
 | [源码基线与复现](meta/sources.md) | 上游地址、界面版本、分析基线 commit、复现命令、API 一手文档链接。 |
 | [版本记录](CHANGELOG.md) | 每次同步的版本、日期与变更条目。 |
 
