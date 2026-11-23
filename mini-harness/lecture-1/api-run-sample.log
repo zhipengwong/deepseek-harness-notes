@@ -1,0 +1,261 @@
+--- 第 1 轮 ---
+=== 请求报文 ===
+POST https://openrouter.ai/api/v1/chat/completions
+{
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer <redacted>"
+  },
+  "body": {
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a helpful assistant. When the user asks to read a file, use the read_file tool."
+      },
+      {
+        "role": "user",
+        "content": "请读取 a.txt 文件，告诉我里面写了什么。"
+      }
+    ],
+    "stream": false,
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "read_file",
+          "description": "读取本地文本文件的内容",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "description": "文件路径"
+              }
+            },
+            "required": [
+              "path"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
+
+=== 响应报文 ===
+HTTP 200
+{
+  "id": "gen-1795408754-K2Xea8q7Ied3mb4GJn3r",
+  "object": "chat.completion",
+  "created": 1795408754,
+  "model": "nvidia/nemotron-3.5-super-vl:free",
+  "provider": "Nvidia",
+  "system_fingerprint": null,
+  "service_tier": null,
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "tool_calls",
+      "native_finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": "用户要求读取 a.txt 文件并告诉我内容。我需要使用 read_file 工具来读取这个文件。\n\n文件路径是 \"a.txt\"",
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call-40916370-3803-4fdb-a24c-50d374d2b962",
+            "function": {
+              "name": "read_file",
+              "arguments": "{\"path\":\"a.txt\"}"
+            }
+          }
+        ],
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "用户要求读取 a.txt 文件并告诉我内容。我需要使用 read_file 工具来读取这个文件。\n\n文件路径是 \"a.txt\"",
+            "format": "unknown",
+            "index": 0
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 318,
+    "completion_tokens": 65,
+    "total_tokens": 383,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0,
+      "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 38,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  }
+}
+
+usage: prompt=318 completion=65 cost=0
+finish_reason: tool_calls
+content: None
+tool_calls: [{"type": "function", "index": 0, "id": "call-40916370-3803-4fdb-a24c-50d374d2b962", "function": {"name": "read_file", "arguments": "{\"path\":\"a.txt\"}"}}]
+
+执行工具 read_file，结果：hello from real file
+
+--- 第 2 轮 ---
+=== 请求报文 ===
+POST https://openrouter.ai/api/v1/chat/completions
+{
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer <redacted>"
+  },
+  "body": {
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a helpful assistant. When the user asks to read a file, use the read_file tool."
+      },
+      {
+        "role": "user",
+        "content": "请读取 a.txt 文件，告诉我里面写了什么。"
+      },
+      {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": "用户要求读取 a.txt 文件并告诉我内容。我需要使用 read_file 工具来读取这个文件。\n\n文件路径是 \"a.txt\"",
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call-40916370-3803-4fdb-a24c-50d374d2b962",
+            "function": {
+              "name": "read_file",
+              "arguments": "{\"path\":\"a.txt\"}"
+            }
+          }
+        ],
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "用户要求读取 a.txt 文件并告诉我内容。我需要使用 read_file 工具来读取这个文件。\n\n文件路径是 \"a.txt\"",
+            "format": "unknown",
+            "index": 0
+          }
+        ]
+      },
+      {
+        "role": "tool",
+        "tool_call_id": "call-40916370-3803-4fdb-a24c-50d374d2b962",
+        "content": "hello from real file"
+      }
+    ],
+    "stream": false,
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "read_file",
+          "description": "读取本地文本文件的内容",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "description": "文件路径"
+              }
+            },
+            "required": [
+              "path"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
+
+=== 响应报文 ===
+HTTP 200
+{
+  "id": "gen-1795408756-b2mVIwjuEWuMpePDfCl1",
+  "object": "chat.completion",
+  "created": 1795408756,
+  "model": "nvidia/nemotron-3.5-super-vl:free",
+  "provider": "Nvidia",
+  "system_fingerprint": null,
+  "service_tier": null,
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "a.txt 文件里的内容是：\n\nhello from real file",
+        "refusal": null,
+        "reasoning": "读取成功，文件内容是 \"hello from real file\"。现在我应该告诉用户文件里写了什么。",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "读取成功，文件内容是 \"hello from real file\"。现在我应该告诉用户文件里写了什么。",
+            "format": "unknown",
+            "index": 0
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 404,
+    "completion_tokens": 44,
+    "total_tokens": 448,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0,
+      "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 28,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  }
+}
+
+usage: prompt=404 completion=44 cost=0
+finish_reason: stop
+content: a.txt 文件里的内容是：
+
+hello from real file
+
+模型最终回复： a.txt 文件里的内容是：
+
+hello from real file

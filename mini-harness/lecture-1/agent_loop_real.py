@@ -1,5 +1,7 @@
-# 最小 Agent 循环演示：真实文件读取版。
-# 与 agent_loop.py 的唯一区别在 execute_tool：此处真的读磁盘文件。
+# 最小 Agent 循环演示：真实文件读取 + 消费工具结果版。
+# 与 agent_loop.py 有两点区别：
+#   1. execute_tool 真的读磁盘文件，不返回写死的字符串。
+#   2. 假模型第二轮读取回灌的 tool 消息，用真实结果生成回复。
 # 配套讲义：docs/course/lecture-1-agent-loop.md，动手任务 3。
 import json
 import os
@@ -23,7 +25,7 @@ tools = [
 ]
 
 
-# 假模型（与 agent_loop.py 相同）
+# 假模型（第二轮消费 tool 消息）
 class FakeModel:
     def __init__(self):
         self.turn = 0
@@ -45,9 +47,11 @@ class FakeModel:
             }
             finish_reason = "tool_calls"
         else:
+            # 从回灌的 tool 消息取真实结果，模拟模型读到工具输出后作答。
+            tool_result = next((m["content"] for m in messages if m["role"] == "tool"), "")
             message = {
                 "role": "assistant",
-                "content": "a.txt 的内容是：hello"
+                "content": f"a.txt 的内容是：{tool_result}"
             }
             finish_reason = "stop"
         return {"choices": [{"finish_reason": finish_reason, "message": message}]}

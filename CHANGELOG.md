@@ -2,6 +2,14 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.8.0 — 2026-11-23
+
+- 第 1 讲新增真 API 脚本 `agent_loop_api.py`。把假模型换成 OpenRouter 模型跑完整循环，逐轮打印请求与响应原始报文，key 只从环境变量读取。
+- 新增真 API 报文样本 `api-run-sample.log`。记录两轮完整报文，含 tool_calls 返回、tool 消息回灌与 token 增长，Authorization 头已遮蔽。
+- 对照版 `agent_loop_real.py` 的第二轮假模型改为从 tool 消息取真实结果作答，消除工具结果与模型回复的不一致。
+- 讲义新增「真 API 实测」一节，用实测数据回答第 0 讲遗留观察题，并给出三个版本的对照表。更新动手任务与「a.txt 在哪里」一节。
+- README 索引新增真 API 脚本与报文样本条目。动手任务 5 已实测完成。
+
 ## v0.7.1 — 2026-11-23
 
 - 第 1 讲代码目录新增 `a.txt` 与 `agent_loop_real.py`。对照版把 `execute_tool` 改为真实读取文件，与原版写死返回值形成对照。两版均已运行验证。
