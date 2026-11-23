@@ -43,11 +43,11 @@
 | [技术架构与源码对应](docs/code/architecture-source-mapping.md) | 配置层、运行时层、调度层、能力层、边界层的逐层源码对应。含三条不变量、版本漂移表和复现命令。 |
 | [10 讲：边学边搭自己的 Agent 骨架](docs/course/ten-lectures-outline.md) | 课程大纲。三段 10 讲的目标、内容、时间估算、每讲节奏和验收标准。 |
 | [第 0 讲：一次 LLM 调用的本质](docs/course/lecture-0-llm-call.md) | 第一讲讲义。裸调用、messages 三种角色、tool_calls、Agent 循环的差别，附可运行请求脚本和小测。 |
-| [第 0 讲实践篇](docs/course/lecture-0-practice.md) | 实测记录。用 OpenRouter 免费模型跑通一次调用，逐字段解读原始返回，含责任链路图与小测批改。 |
+| [第 0 讲：实践篇](docs/course/lecture-0-practice.md) | 实测记录。用 OpenRouter 免费模型跑通一次调用，逐字段解读原始返回，含责任链路图与小测批改。 |
 | [第 1 讲：从单次调用到 Agent 循环](docs/course/lecture-1-agent-loop.md) | 第二讲讲义。循环五步、tools 清单、tool_calls 返回，附可离线运行的假模型脚本与真 API 对照。 |
-| [第 1 讲实践篇](docs/course/lecture-1-practice.md) | 实测记录。三阶段脚本从假模型到真 I/O 再到真 API，含两轮报文、tool_call_id 配对图、小测批改与验收。代码与报文样本的链接见该篇开头。 |
+| [第 1 讲：实践篇](docs/course/lecture-1-practice.md) | 实测记录。三阶段脚本从假模型到真 I/O 再到真 API，含两轮报文、tool_call_id 配对图、小测批改与验收。代码与报文样本的链接见该篇开头。 |
 | [第 2 讲：插件化，一切皆插件](docs/course/lecture-2-plugin.md) | 第三段机制篇第一讲。插件三形态、ctx 与 fiber、effect 与 disposer、五种事件派发的使用场景与配图、上游源码落点与平台取舍。 |
-| [第 2 讲实践篇](docs/course/lecture-2-practice.md) | 实测记录。任务 1-3 与选做的实测输出、effect 逆序清理的两层验证、waterfall 吞链三场景对照、小测批改与验收。任务代码链接见该篇开头。 |
+| [第 2 讲：实践篇](docs/course/lecture-2-practice.md) | 实测记录。任务 1-3 与选做的实测输出、effect 逆序清理的两层验证、waterfall 吞链三场景对照、小测批改与验收。任务代码链接见该篇开头。 |
 | [源码基线与复现](meta/sources.md) | 上游地址、界面版本、分析基线 commit、复现命令、API 一手文档链接。 |
 | [版本记录](CHANGELOG.md) | 每次同步的版本、日期与变更条目。 |
 

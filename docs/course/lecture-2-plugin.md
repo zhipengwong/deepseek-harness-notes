@@ -121,7 +121,7 @@ ctx.effect(setup)
 | `plugin_core.py` | 最小框架。`FiberState`、`Fiber`、`Context`、`App` 四个类。 |
 | `demo.py` | 演示插件。加载、事件广播、waterfall 拦截、卸载。 |
 
-动手任务扩展代码 `demo_task2.py` 与 `demo_task4.py` 的实测见第 2 讲实践篇。
+动手任务扩展代码 `demo_task2.py` 与 `demo_task4.py` 的实测见第 2 讲：实践篇。
 
 运行：
 
