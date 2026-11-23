@@ -48,6 +48,8 @@
 | [第 1 讲：实践篇](docs/course/lecture-1-practice.md) | 实测记录。三阶段脚本从假模型到真 I/O 再到真 API，含两轮报文、tool_call_id 配对图、小测批改与验收。代码与报文样本的链接见该篇开头。 |
 | [第 2 讲：插件化，一切皆插件](docs/course/lecture-2-plugin.md) | 第三段机制篇第一讲。插件三形态、ctx 与 fiber、effect 与 disposer、五种事件派发的使用场景与配图、上游源码落点与平台取舍。 |
 | [第 2 讲：实践篇](docs/course/lecture-2-practice.md) | 实测记录。任务 1-3 与选做的实测输出、effect 逆序清理的两层验证、waterfall 吞链三场景对照、小测批改与验收。任务代码链接见该篇开头。 |
+| [第 3 讲：Agent 循环与状态机，长任务怎么被驱动、怎么停](docs/course/lecture-3-agent-loop.md) | 第三段机制篇第二讲。三层嵌套循环、数据判定的终止条件、max-tokens 粘性、日志投影与取消语义、上游源码落点与平台取舍。 |
+| [第 3 讲：实践篇](docs/course/lecture-3-practice.md) | 实测记录。最小会话驱动器四场景输出、工具调用与多轮驱动的层级验证、取消清空 inbox、粘性终态、小测批改与验收。代码链接见该篇开头。 |
 | [源码基线与复现](meta/sources.md) | 上游地址、界面版本、分析基线 commit、复现命令、API 一手文档链接。 |
 | [版本记录](CHANGELOG.md) | 每次同步的版本、日期与变更条目。 |
 

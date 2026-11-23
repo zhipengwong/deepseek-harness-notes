@@ -2,6 +2,12 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.8.10 — 2026-11-24
+
+- 新增第 3 讲讲义 `lecture-3-agent-loop.md` 与实践篇 `lecture-3-practice.md`。讲义讲三层循环、数据判定终止、max-tokens 粘性、日志投影与取消语义，引用已入库的 `lecture-3-loop-layers.png`；实践篇记录最小会话驱动器四场景实测、小测四题批改（两题重答、一题补动机）与验收。
+- 新增 `mini-harness/lecture-3/`：`loop_core.py`（Inbox/Session/AbortSignal/Driver/FakeModel）与 `demo.py`（完成判定、多轮驱动、取消、粘性四场景），全部离线运行。
+- README 索引补第 3 讲讲义与实践篇两行。终止原因按源码如实写全七种（含 blocked 与两个恢复期标记），修正口头讲解的「四类」简化。
+
 ## v0.8.9 — 2026-11-23
 
 - 新增第 3 讲配图 `docs/course/lecture-3-loop-layers.png`。图示三层嵌套循环（driver / turn / step）与唤醒入口，供第 3 讲讲义引用。`.gitignore` 精确放行该图。
