@@ -51,6 +51,8 @@
 | [第 2 讲：实践篇](docs/course/lecture-2-practice.md) | 实测记录。任务 1-3 与选做的实测输出、effect 逆序清理的两层验证、waterfall 吞链三场景对照、小测批改与验收。任务代码链接见该篇开头。 |
 | [第 3 讲：Agent 循环与状态机，长任务怎么被驱动、怎么停](docs/course/lecture-3-agent-loop.md) | 第三段机制篇第二讲。三层嵌套循环、数据判定的终止条件、max-tokens 粘性、日志投影与取消语义、上游源码落点与平台取舍。 |
 | [第 3 讲：实践篇](docs/course/lecture-3-practice.md) | 实测记录。最小会话驱动器四场景输出、工具调用与多轮驱动的层级验证、取消清空 inbox、粘性终态、小测批改与验收。代码链接见该篇开头。 |
+| [第 4 讲：上下文与 Session 日志，记忆只存一份怎么保证不乱](docs/course/lecture-4-session-log.md) | 第三段机制篇第三讲。append-only 日志是唯一真源、双投影、surfaceOp 的 append 与 replace、模型可见 ⟺ 已记录不变量、重放即重算、上游源码落点与平台取舍。 |
+| [第 4 讲：实践篇](docs/course/lecture-4-practice.md) | 实测记录。最小日志与双投影四场景输出、遮蔽式压缩不删事件、不写事件不进模型视图、崩溃补记走同一 fold 路径、小测批改与验收。代码链接见该篇开头。 |
 | [源码基线与复现](meta/sources.md) | 上游地址、界面版本、分析基线 commit、复现命令、API 一手文档链接。 |
 | [版本记录](CHANGELOG.md) | 每次同步的版本、日期与变更条目。 |
 

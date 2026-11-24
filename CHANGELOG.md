@@ -2,6 +2,14 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.8.13 — 2026-11-24
+
+- 新增第 4 讲讲义 `lecture-4-session-log.md`：append-only 日志唯一真源、双投影（模型 surface 与人类 transcript）、surfaceOp 的 append/replace、模型可见 ⟺ 已记录不变量、重放即重算，含源码落点表与平台取舍。
+- 新增第 4 讲实践篇 `lecture-4-practice.md`：四场景实测、小测四题逐题批改与自主复述记录、验收六项。
+- 新增两张配图：`lecture-4-log-projections-concept.png` 作讲义概念图（seq 从 0 起），`lecture-4-log-projections.svg` 作实践篇实测对照图（seq 与 demo 对齐，从 1 起）。两图结构相同，仅编号起点不同。
+- 新增 `mini-harness/lecture-4/`：`session_core.py` 与 `demo.py`，离线可运行。
+- README 补第 4 讲两行索引。
+
 ## v0.8.12 — 2026-11-24
 
 - `tool-invocation-lifecycle.md` 的 43 处源码落点全部改为可点击链接，绑定上游 deepseek-harness 仓库固定 commit `4b399c39` 的行锚点（如 `#L295-L297`）。链接锁定基线不漂移，源码仍不入库，符合脱敏约定。
