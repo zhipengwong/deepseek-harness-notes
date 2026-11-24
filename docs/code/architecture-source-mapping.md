@@ -10,7 +10,7 @@
 
 ## 架构总览
 
-DeepSeek Harness 没有内核。启动时，多层 YAML patch 叠加成一棵插件条目树。Cordis 按依赖关系把这棵树结算成共享上下文 `ctx`。所有行为都是插件之间的服务调用与事件瀑布，包括收消息、调模型、跑工具、写日志和渲染 UI。换一层 patch 就换一个产品形态。会话事实只保存在一份 append-only 日志里。
+DeepSeek Harness 没有内核。启动时，多层 YAML patch 叠加成一棵插件条目树。Cordis 按依赖关系把这棵树结算成共享上下文 `ctx`。所有行为都是插件之间的服务调用与事件瀑布，包括收消息、调模型、跑工具、写日志和渲染 UI。不同的 patch 组合对应不同的产品形态。会话事实只保存在一份 append-only 日志里。
 
 ![五层架构与源码落点](architecture-layers.png)
 
@@ -22,7 +22,9 @@ DeepSeek Harness 没有内核。启动时，多层 YAML patch 叠加成一棵插
 4. 能力层。seam 三段式。
 5. 边界层。进程形态，通信契约，持久化，权限四层。
 
-## 配置层：patch 叠加与插件内核
+## 配置层
+
+配置层由 patch 叠加与插件内核构成。
 
 ### 配置叠加
 
@@ -58,7 +60,9 @@ DeepSeek Harness 没有内核。启动时，多层 YAML patch 叠加成一棵插
 
 启动链顺序为 `new Context()`，`ctx.plugin(Loader)`，挂载 patches，`loader.await()`，`auditStartupEntries()`。任一 required 插件未激活时抛出 `StartupError`，dispose 整棵树，进程以 exit(1) 结束。optional 插件失败只产生警告。
 
-## 运行时层：Agent 循环与事件域
+## 运行时层
+
+运行时层覆盖 Agent 循环与事件域。
 
 ### inbox 入口与唤醒
 
@@ -86,7 +90,7 @@ DeepSeek Harness 没有内核。启动时，多层 YAML patch 叠加成一棵插
 | `deriveMessages()` 调用 | `agent.ts:718` | 漂移 -10 行 |
 | `turn/end` 落盘 | `agent.ts:418` | 漂移 -4 行 |
 
-循环通过向 inbox 写入下一段输入推进。`kick()` 使用 while 循环，不使用递归调用栈。`additionalContexts` 被拼接进 `next-step` inbox，成为下一步的输入。
+循环通过向 inbox 写入下一段输入推进。`kick()` 使用 while 循环，不使用递归调用栈。循环把 `additionalContexts` 拼接进 `next-step` inbox，成为下一步的输入。
 
 ### 事件域与结束原因
 
@@ -128,7 +132,9 @@ DeepSeek Harness 没有内核。启动时，多层 YAML patch 叠加成一棵插
 | `FactoryOwnership` | `agent-loop/src/index.ts:54` | 两条基线一致 |
 | `session-checkpoint-policy` | `session/session-checkpoint-policy/src/index.ts:20-83` | 逐字节相同 |
 
-## 调度层：工具执行流水线
+## 调度层
+
+调度层对应工具执行流水线。
 
 | 架构概念 | 源码位置 | 与对比基线的差异 |
 |---|---|---|
@@ -147,7 +153,9 @@ DeepSeek Harness 没有内核。启动时，多层 YAML patch 叠加成一棵插
 
 按 `kind: 'deny'` 做文本检索时，只命中工厂定义 `pipeline.ts:713` 和类型声明 `:42`。实际拒绝决策点是 5 处 `approvalDenial()` 调用。
 
-## 能力层：seam 三段式
+## 能力层
+
+能力层对应 seam 三段式。
 
 | 架构概念 | 源码位置 | 与对比基线的差异 |
 |---|---|---|
@@ -160,9 +168,11 @@ DeepSeek Harness 没有内核。启动时，多层 YAML patch 叠加成一棵插
 
 一个 seam 由三部分组成。Service Definition 声明接口。Service Provider 实现接口。Consumer 是面向模型的工具。更换 Provider 会把 Bash、PTY 和 LSP 一起搬到远程沙箱，无需为每个工具建立分支，模型看到的 schema 不变。
 
-web 层把 `disabled: true` 设在进程级工具行上。这不是删除能力，而是 plane 迁移。base 中的行被禁用，agent preset 名录重新启用这些工具。
+web 层把 `disabled: true` 设在进程级工具行上。这不是删除能力，而是 plane 迁移。web 层禁用 base 中的行，agent preset 名录重新启用这些工具。
 
-## 边界层：进程与数据
+## 边界层
+
+边界层覆盖进程与数据。
 
 ### 进程形态与通信
 
@@ -179,7 +189,7 @@ web 层把 `disabled: true` 设在进程级工具行上。这不是删除能力�
 | Typert 从 Host ts.Program 生成两侧描述符 | `packages/typert/generator/src/analyzer.ts:384`、`:625`、`:666` | 仍成立 |
 | token 到签名 cookie 与 Host、Origin 栅栏 | `host/authentication-token/src/browser-auth.ts:197`、`:203`、`:257`。`index.ts:56`、`:82` | 仍成立 |
 
-启动图和 `/plugins/<id>/client.js` 的传递由 `webserver/src/index.ts` 注入 script src。启动图的具体数据结构未直接读取。
+`webserver/src/index.ts` 注入 script src，传递启动图和 `/plugins/<id>/client.js`。启动图的具体数据结构未直接读取。
 
 ### 持久化
 
@@ -206,7 +216,7 @@ SQLite 包的 README 原文如下。
 | 审批层 user-approval 与 permission-presets | `interaction/user-approval/src/index.ts`。`interaction/permission-presets/src/index.ts:118-120`、`:163-168`、`:185-190` | 行号漂移。对比基线为 `119-120`、`163`、`191-197` |
 | 传输层 remote-access 按 role 限制 | `api/remote-access/src/index.ts:38`。`types.ts:29`、`:45` | 仍成立 |
 
-权限档位由两个旋钮构成。sandbox 决定可读写范围。approval 决定是否需要审批。`permission-presets/src/index.ts:118-120` 定义三档字面量。`:185-190` 的 preset 表把 sandbox 与 approval 绑定。
+权限档位由两个参数构成。sandbox 决定可读写范围。approval 决定是否需要审批。`permission-presets/src/index.ts:118-120` 定义三档字面量。`:185-190` 的 preset 表把 sandbox 与 approval 绑定。
 
 ## 三条不变量
 
@@ -216,7 +226,7 @@ SQLite 包的 README 原文如下。
 | 注册即副作用，dispose 即撤销 | Cordis fiber 管理注册项生命周期，位于 `vendor/cordis/src/fiber.ts:446`。`fiber.dispose()` 递归卸载，见 `docs/cordis-api/fiber.zh.md:104-124` | HMR 失效，插件卸载留残留 |
 | 策略不进工具本体，缺席即拒绝 | 策略位于 waterfall、guard 和 approval 插件，见 `pipeline.ts:201`、`:214`。5 处 `approvalDenial()` 位于 `:460`、`:466`、`:481`、`:485`、`:489`。无 toolSet 返回 UNKNOWN_TOOL，见 `tools/src/index.ts:249-255` | 工具作者各写一套权限判断，漏一处即越权 |
 
-压缩、终端、子代理和任务板不是主干。它们是挂在这三条不变量上的可选 seam。
+压缩、终端、子代理和任务板不是主干。它们是建立在这三条不变量上的可选 seam。
 
 ## 版本漂移
 
