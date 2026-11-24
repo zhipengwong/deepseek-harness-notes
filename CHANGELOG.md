@@ -2,6 +2,11 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.9.0 — 2026-11-24
+
+- 按技术写作规范重排 `docs/code/tool-invocation-lifecycle.md`：标题简化，章节按链路环节合并为注册与清单、缺失处理、模型输出约束、定位方式、执行与调度、事件钩子、失败压缩与重放、上游做法与约束；保留全部源码链接和事实边界。
+- 试验性文字优化第 4 讲讲义 `lecture-4-session-log.md` 与实践篇 `lecture-4-practice.md`：改用事实语气，压缩破折号与口语化连接词，实测输出、源码落点和小测批改结论不变。
+
 ## v0.8.13 — 2026-11-24
 
 - 新增第 4 讲讲义 `lecture-4-session-log.md`：append-only 日志唯一真源、双投影（模型 surface 与人类 transcript）、surfaceOp 的 append/replace、模型可见 ⟺ 已记录不变量、重放即重算，含源码落点表与平台取舍。

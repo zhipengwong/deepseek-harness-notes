@@ -1,8 +1,8 @@
 # 第 4 讲：上下文与 Session 日志，记忆只存一份怎么保证不乱
 
-第 3 讲讲清了循环怎么驱动、怎么停。这一讲回答一个更要命的问题：循环跑起来的对话历史存在哪。
+第 3 讲讲清了循环怎么驱动、怎么停。这一讲回答下一个问题：循环跑起来的对话历史存在哪。
 
-先给结论：上游**没有单独存"聊天记录"**。它只存一份只追加（append-only）的事件日志，模型看到的消息、用户看到的对话、会话标题，全是从这份日志**派生**（derive）出来的视图。这个概念叫 **projection（投影）**：从一份事实算出多种只读视图，而不存第二份事实。
+先给结论：上游**没有单独存"聊天记录"**。它只存一份只追加（append-only）的事件日志。模型看到的消息、用户看到的对话、会话标题，全是从这份日志**派生**（derive）出来的视图。这个概念叫 **projection（投影）**，即从一份事实算出多种只读视图，而不存第二份事实。
 
 ## 唯一真源是一份只追加的事件日志
 
@@ -17,19 +17,19 @@ type SessionEvent = {
 }
 ```
 
-写入口是 `Session.append(type, data, opts)`（实测：`index.ts:557-570`）：先做 JSON 快照 → 构造冻结事件 → `commit()` 里 `log.push()`。日志里记的是**「发生了什么」**，不是「当前状态是什么」——这是事件溯源（event sourcing）和存快照的根本区别。
+写入口是 `Session.append(type, data, opts)`（实测：`index.ts:557-570`）。它先做 JSON 快照，构造冻结事件，再在 `commit()` 里 `log.push()`。日志里记的是**「发生了什么」**，不是「当前状态是什么」。这是事件溯源（event sourcing）和存快照的根本区别。
 
-事件类型很丰富（实测：`known-event-types.ts:22-87` 共 65 种）：`user/message`、`assistant/message`、`tool/call`、`tool/result`、`turn/start/end`、`step/start/end`、`compaction/*`、`approval/*`……插件还能通过声明合并扩展自己的类型。
+事件类型共 65 种（实测：`known-event-types.ts:22-87`），包括 `user/message`、`assistant/message`、`tool/call`、`tool/result`、`turn/start/end`、`step/start/end`、`compaction/*` 和 `approval/*`。插件还能通过声明合并扩展自己的类型。
 
 ## 一份日志，多个投影
 
-只有 5 类事件能进入模型的消息视图，叫 **surface**（实测：`surface.ts:1-3` 的模块注释）——「事件日志之上、能产生 LLM 消息的有序视图」。这 5 类是（实测：`surface.ts:49-56`）：`system/message`、`developer/message`、`user/message`、`assistant/message`、`tool/result`。
+只有 5 类事件能进入模型的消息视图，叫 **surface**（实测：`surface.ts:1-3` 的模块注释），即「事件日志之上、能产生 LLM 消息的有序视图」。这 5 类是（实测：`surface.ts:49-56`）：`system/message`、`developer/message`、`user/message`、`assistant/message` 和 `tool/result`。
 
-其余 60 类事件（turn 边界、工具调用、审批、压缩记录……）只留在日志里，不直接进模型上下文。
+其余 60 类事件（turn 边界、工具调用、审批、压缩记录等）只留在日志里，不直接进模型上下文。
 
 ![一份日志派生出模型视图与人类视图两个投影（概念示意，seq 编号从 0 起）](lecture-4-log-projections-concept.png)
 
-> 图中 seq 从 0 起编号，是为概念示意；实践篇的实测对照图与 demo 输出一致，seq 从 1 起。两图结构相同，仅编号起点不同。
+> 图中 seq 从 0 起编号，是为概念示意。实践篇的实测对照图与 demo 输出一致，seq 从 1 起。两图结构相同，仅编号起点不同。
 
 同一份日志上有两个最重要的投影：
 
@@ -38,7 +38,7 @@ type SessionEvent = {
 | 模型可见 surface | `Session.deriveMessages()`（`index.ts:778-799`） | 按 `surfaceOp` 折叠出的节点序列 |
 | 人类可读 transcript | `isAppendSurfaceEvent()`（`surface.ts:82-92`） | 只读 append-origin 事件 |
 
-这两个视图**故意不一样**：模型视图会遮蔽被摘要覆盖的旧消息，人类视图不会。原因写得很直白（实测：`surface.ts:79-92` 的注释）——一份 landed replacement 会抹掉用户已经看过的对话，所以人类转录不能用模型视图当来源；替换副本只给模型看。
+这两个视图**故意不一样**。模型视图会遮蔽被摘要覆盖的旧消息，人类视图不会。原因写得很直白（实测：`surface.ts:79-92` 的注释）：一份 landed replacement 会抹掉用户已经看过的对话，所以人类转录不能用模型视图当来源。替换副本只给模型看。
 
 ## surfaceOp：append 与 replace
 
@@ -61,9 +61,9 @@ if (plan?.kind === 'append') {
 }
 ```
 
-注意 `nodes` 存的是 **seq 索引**，不是事件本体。`splice` 改的是这个索引数组，原始事件还完整躺在 `log` 里。**这就是「遮蔽不是删除」的精确含义**：省的是模型的 token，不是磁盘上的数据。
+注意 `nodes` 存的是 **seq 索引**，不是事件本体。`splice` 改的是这个索引数组，原始事件仍完整保留在 `log` 里。**这就是「遮蔽不是删除」的精确含义**：省的是模型的 token，不是磁盘上的数据。
 
-还有两道校验保证替换不撒谎：`sourceEventSeqs` 必须覆盖所有被遮蔽的节点（实测：`surface.ts:370-372`）；节点 0 的系统提示只能被 `system/message` 精确替换（实测：`surface.ts:494-513`）。
+还有两道校验保证替换可信：`sourceEventSeqs` 必须覆盖所有被遮蔽的节点（实测：`surface.ts:370-372`）。节点 0 的系统提示只能被 `system/message` 精确替换（实测：`surface.ts:494-513`）。
 
 ## 不变量：模型可见 ⟺ 已记录
 
@@ -71,15 +71,15 @@ if (plan?.kind === 'append') {
 
 > **Model-visible ⟺ logged**: anything that reaches a model request must be reconstructable from the session log; a new model-visible input requires a session event.
 
-翻译：任何进入模型请求的内容，都必须能从日志重建；想给模型看一样新东西，先写一条事件。
+翻译：任何进入模型请求的内容，都必须能从日志重建。想给模型看一样新东西，先写一条事件。
 
-这条规则杜绝的是「模型看到了某段文本，但日志里查不到」这种无法复现的状态。它的价值在崩溃恢复时才显现——如果允许临时拼一段提示进请求而不记录，重放时这段内容就凭空消失，同样的请求第一次和第二次结果不同。日志的「可溯源」一旦破了，「可复现」也跟着没了。
+这条规则杜绝的是「模型看到了某段文本，但日志里查不到」这种无法复现的状态。它的价值在崩溃恢复时才显现。如果允许临时拼一段提示进请求而不记录，重放时这段内容就凭空消失，同样的请求第一次和第二次结果不同。日志的「可溯源」一旦破了，「可复现」也跟着没了。
 
 **正规路径**是先记录后可见：压缩时先追加 `compaction/summary` 事件，再追加一条带 `surfaceOp:replace` 的 `user/message`（实测：`packages/compaction/compaction-basic/src/region.ts:497-515`）。顺序不能反。
 
 ## 重放即重算，不是加载记录
 
-日志在内存里的真源是 `private log: SessionEvent[] = []`（`index.ts:305`）。持久化不是 Session 的职责——通过 `session/event` 事件通知插件落盘，后端有 JSONL 与 SQLite 两种（实测：`docs/subsystems/persistence.md:353-356`）。
+日志在内存里的真源是 `private log: SessionEvent[] = []`（`index.ts:305`）。持久化不是 Session 的职责。它通过 `session/event` 事件通知插件落盘，后端有 JSONL 与 SQLite 两种（实测：`docs/subsystems/persistence.md:353-356`）。
 
 恢复的关键在于**重放走的是和实时追加完全相同的折叠路径**。实测 `validation.ts:381-390` 的 `replaySurfaceEvent()`：
 
@@ -89,7 +89,7 @@ if (plan?.kind === 'append') {
 surface.validateNext(event)
 ```
 
-崩溃时如果 turn/step 没正常结束，`repair.ts:53-97` 会合成 `step/end` 与 `turn/end`（reason 为 `interrupted`），并给未出结果的工具合成错误 `tool/result`（实测：`repair.ts:187-193`）。补记的**也是普通事件**——它们走同一条 fold 路径进入状态，不需要特殊的恢复分支。
+崩溃时如果 turn/step 没正常结束，`repair.ts:53-97` 会合成 `step/end` 与 `turn/end`（reason 为 `interrupted`），并给未出结果的工具合成错误 `tool/result`（实测：`repair.ts:187-193`）。补记的**也是普通事件**。它们走同一条 fold 路径进入状态，不需要特殊的恢复分支。
 
 所以重放不是「加载聊天记录」，是**把日志重新折叠一遍**。这也是为什么不需要 `paused` 这样的可变状态位：状态随时能从事实重算。
 
@@ -121,13 +121,13 @@ surface.validateNext(event)
 
 本讲代码做一个**最小 append-only 日志 + 双投影**，把只追加、遮蔽式压缩、不变量与崩溃重放各跑一遍。代码与实测见第 4 讲：实践篇。
 
-设计上保留四件事：日志只增不改；`surfaceOp` 决定事件是否进模型视图；`replace` 只改节点索引不动事件本体；补记事件走同一条 fold 路径。省略的是 generations 缓存、完整性校验的全套规则、durable 落盘与插件扩展类型——这些留给后续讲次或实际平台实现。
+设计上保留四件事。日志只增不改。`surfaceOp` 决定事件是否进模型视图。`replace` 只改节点索引不动事件本体。补记事件走同一条 fold 路径。省略的是 generations 缓存、完整性校验的全套规则、durable 落盘与插件扩展类型。这些留给后续讲次或实际平台实现。
 
 ## 要不要这样做
 
 只存日志、投影出视图，是有代价的设计。
 
-代价是读路径变复杂。想拿一份消息历史，不能直接读一个数组，要跑一遍折叠；节点多了还要缓存（`index.ts:755-776` 的 generation 机制就是为此）。换来的是可恢复、可审计、可 fork——崩溃后重算，审查时回溯，分叉时从同一份事件重建不同视图。
+代价是读路径变复杂。想拿一份消息历史，不能直接读一个数组，要跑一遍折叠。节点多了还要缓存（`index.ts:755-776` 的 generation 机制就是为此）。换来的是可恢复、可审计、可 fork。崩溃后重算，审查时回溯，分叉时从同一份事件重建不同视图。
 
 对比另一条路：直接存一份可变 messages 数组，读写都简单。但压缩时删除历史就真删了，崩溃后状态无法重建，「模型看到什么」也没有可核查的依据。任务短、不需要恢复和审计时，这条路更简单。
 
@@ -137,7 +137,7 @@ surface.validateNext(event)
 
 1. 运行基线脚本，确认输出与本讲一致，重点看两个投影何时一致、何时分叉。
 2. 给日志追加一条压缩摘要，用 `replace` 遮蔽旧区间，确认原始事件还在、只从模型视图消失。
-3. 手动往日志里塞一条没有 `surfaceOp` 的事件，确认它不进模型视图——这是「模型可见 ⟺ 已记录」的实测。
+3. 手动往日志里塞一条没有 `surfaceOp` 的事件，确认它不进模型视图，这就是「模型可见 ⟺ 已记录」的实测。
 4. 选做：模拟一次崩溃（有 `turn/start` 和 `tool/call`，没有收尾），运行补记与重放，观察补记事件如何进入模型视图。
 
 本讲代码全部离线运行，不需要网络。
