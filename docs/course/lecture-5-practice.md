@@ -2,7 +2,12 @@
 
 本文记录第 5 讲的链路走查与小测判定。讲义讲一次工具调用从注册到回灌经过哪些关卡，这篇对着三张图逐环节核对，并记录五道小测的作答与判定。
 
-mini-harness 第 5 讲代码尚未编写，本篇不含实测输出。第 3、4 讲的实践篇都有可运行的 demo，本讲没有。代码完成后补入动手与验收部分。
+代码在 `mini-harness/lecture-5/`，共两个文件，全部离线运行，不需要网络和 key。
+
+| 文件 | 用途 |
+|---|---|
+| [tools_core.py](../../mini-harness/lecture-5/tools_core.py) | 最小工具核心。`ToolRegistry` 注册与 resolve、`PluginHost` 装卸、`waterfall` 与 `approve` 裁决闸门、`Dispatcher` 有界调度与按序回灌。 |
+| [demo.py](../../mini-harness/lecture-5/demo.py) | 四个场景：注册与卸载、审批放行与拒绝、乱序按序回灌与 exclusive 屏障、只观察吞链导致的默认拒绝。 |
 
 三张图来自讲解环节，按技术示意图重绘，只保留机制名称、字段名和符号。第三张图底部在原始截图里被截断，重绘时按专题记录的结论补全。源码落点与 GitHub 链接见[工具调用链路](../code/tool-invocation-lifecycle.md)。
 
@@ -106,6 +111,81 @@ mini-harness 第 5 讲代码尚未编写，本篇不含实测输出。第 3、4 
 
 需要回看三处。工具缺失的四条路径见第 2 题答案。并发上限与回灌顺序见「执行调度与回灌」。`next()` 纪律见「执行前的裁决闸门」。这三处都是查文档就能确认的事实，不涉及设计判断。
 
+## 动手：跑通四个场景
+
+```bash
+cd mini-harness/lecture-5
+python3 demo.py
+```
+
+代码只用标准库，不访问网络，不需要 key。四个场景对应讲义的四条动手任务。下面贴关键输出。
+
+### 场景 1：清单按插件状态重建
+
+```
+[清单 resolve] ['get_weather', 'calculator']
+[模型视野 prompt_view]
+    {'name': 'get_weather', 'description': '查询城市天气，返回温度与状况', ...}
+    {'name': 'calculator', 'description': '计算两个数的和', ...}
+  [unload] weather
+      [dispose]  -get_weather
+[卸载 weather 后的清单] ['calculator']
+```
+
+`resolve()` 每次返回当前在册的工具。卸载 weather 的 fiber 触发注销，清单只剩 calculator。这验证了动手任务 1。`prompt_view` 里只有 name、description 和 parameters，模型据此判断调用哪个工具，看不到 `execute` 的实现。工具名用于运行时定位，description 才是模型选择的依据，这也是小测第 1 题丢分的地方。
+
+### 场景 2：闸门放行与拒绝
+
+```
+      [gate] c1 get_weather → allowed-once
+      [execute] c1 放行，进入工具执行
+      [gate] c2 delete_file → rejected
+      [block] c2 未放行，不进入执行
+      [gate] c3 list_dir → unavailable
+      [block] c3 未放行，不进入执行
+```
+
+审批链挂了两个应答者。第一个认领只读调用并返回 `allowed-once`，第二个拦截 `delete_file` 并返回 `rejected`。`list_dir` 无人认领，走到默认处理落 `unavailable`。三种结果里只有第一种进入执行，另外两种被闸门挡住。这验证了动手任务 2，也覆盖审批四种结果中的三种。失败关闭体现在无人认领时不默认放行。
+
+### 场景 3：乱序执行，按序回灌
+
+```
+  并发上限 = DEFAULT_MAX_PARALLEL_TOOL_CALLS = 10
+      [done] b calculator → 5
+      [done] c get_weather → 上海 晴 25C
+      [done] a get_weather → 北京 晴 25C
+
+[回灌结果，按提交顺序]
+   a: 北京 晴 25C
+   b: 5
+   c: 上海 晴 25C
+   → 执行顺序 b, c, a，回灌顺序 a, b, c，两者不同
+```
+
+提交顺序是 a、b、c，`finish_after` 让完成顺序变成 b、c、a。回灌结果仍按提交顺序排列。这就是讲义里的「乱序执行，结果按模型顺序提交」，也是动手任务 3。并发上限取自常量 `DEFAULT_MAX_PARALLEL_TOOL_CALLS`，本例只有三个调用，没有触及上限。
+
+加入 `exclusive` 调用后，屏障效果如下。
+
+```
+      [done] d get_weather → 广州 晴 25C
+      [barrier] 池排空，开始 exclusive 调用
+      [done] e calculator → 15
+[回灌结果] ['d:广州 晴 25C', 'e:15']
+```
+
+d 先执行，池排空后 e 才作为独占调用启动。回灌仍按提交顺序 d、e。
+
+### 场景 4：只观察不调用 next()
+
+```
+      [observe] 看到 calculator，但不调用 next()
+      [gate] 链被吞掉，无人认领 → unavailable
+      [gate] x calculator → unavailable
+   → 裁决 unavailable，调用被默认拒绝，未进入执行
+```
+
+审批链首挂了一个只观察的监听器，它打印日志后不调用 `next()`，也不返回裁决。链尾本有一个应答者会放行 calculator，但它收不到调用。结果是 `unavailable`，调用被拒绝。这验证了动手任务 4，也把小测第 3 题漏答的那一问跑成了可见输出。上游把这条纪律当成硬约束，可插拔 waterfall 的代价正在这里。
+
 ## 验收记录
 
 | 项 | 结果 |
@@ -115,10 +195,10 @@ mini-harness 第 5 讲代码尚未编写，本篇不含实测输出。第 3、4 
 | 审批闸门四种结果与 waterfall 理由 | 通过 |
 | 调度模式、并发上限与回灌顺序 | 通过 |
 | 五道小测完成作答与判定 | 通过 |
-| mini-harness 第 5 讲代码与实测输出 | 待补 |
+| mini-harness 第 5 讲代码与实测输出 | 通过。四个场景离线跑通，输出与讲义结论一致 |
 
-前五项完成。代码与实测输出待第 5 讲动手任务完成后补入。
+代码覆盖注册与卸载、放行与拒绝、乱序按序回灌、吞链默认拒绝四条主线。省略的部分是真实执行器、并发池的取消合成结果与重放、压缩 seam 和多路审批应答者，讲义在移植一节已逐条说明。
 
 ## 事实边界
 
-源码行号来自 commit `4b399c39`。第 5 讲代码尚未编写，本篇不含实测输出，五个小节都是对讲义内容的走查。三张图为脱敏技术示意图，只含机制名称和字段名。第三张图末行在原截图里被截断，按[工具调用链路](../code/tool-invocation-lifecycle.md)的结论补全。并发上限 10 路、审批四种结果、失败关闭来自子系统文档和源码注释。要不要给骨架加审批属于设计取舍，不是源码事实。
+源码行号来自 commit `4b399c39`。本篇前五个小节是对讲义内容的走查，动手与实测部分的输出来自本地 `mini-harness/lecture-5/demo.py` 的实际运行。教学用的执行器是本地函数，调度用 `finish_after` 控制完成顺序而非真实线程，因此能稳定复现乱序与按序回灌的对照，不模拟真实并发时序。三张图为脱敏技术示意图，只含机制名称和字段名。第三张图末行在原截图里被截断，按[工具调用链路](../code/tool-invocation-lifecycle.md)的结论补全。并发上限 10 路、审批四种结果、失败关闭来自子系统文档和源码注释。要不要给骨架加审批属于设计取舍，不是源码事实。
