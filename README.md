@@ -54,7 +54,8 @@
 | [第 4 讲：上下文与 Session 日志，记忆只存一份怎么保证不乱](docs/course/lecture-4-session-log.md) | 第三段机制篇第三讲。append-only 日志是唯一真源、双投影、surfaceOp 的 append 与 replace、模型可见 ⟺ 已记录不变量、重放即重算、上游源码落点与平台取舍。 |
 | [第 4 讲：实践篇](docs/course/lecture-4-practice.md) | 实测记录。最小日志与双投影四场景输出、遮蔽式压缩不删事件、不写事件不进模型视图、崩溃补记走同一 fold 路径、小测批改与验收。代码链接见该篇开头。 |
 | [第 5 讲：工具调用，一次请求怎么穿过闸门](docs/course/lecture-5-agent-tools.md) | 第三段机制篇第四讲。工具由插件注册、每步写进提示词、模型无申请新工具的动作、执行前裁决闸门、并行与屏障调度、按序回灌，含源码落点与平台取舍。 |
-| [第 5 讲：实践篇](docs/course/lecture-5-practice.md) | 链路走查记录。工具进入模型视野、执行前裁决闸门、调度与回灌三张脱敏图，逐环节核对与五道小测的作答判定。课程代码与实测输出待补。 |
+| [第 5 讲：实践篇](docs/course/lecture-5-practice.md) | 链路走查与实测记录。三张脱敏图逐环节核对工具注册、审批闸门与调度回灌，五道小测的作答判定，四个场景的实测输出与验收。代码链接见该篇开头。 |
+| [第 6 讲：能力 seam，换实现不改接口，怎么切](docs/course/lecture-6-capability-seam.md) | 第三段机制篇第五讲。约定、实现与消费方三种变化，Service Definition、Service Provider 与 Consumer 三角色，shell 三件套落地，不预防性拆分与权限能力的区分，含源码落点与平台取舍。 |
 | [源码基线与复现](meta/sources.md) | 上游地址、界面版本、分析基线 commit、复现命令、API 一手文档链接。 |
 | [版本记录](CHANGELOG.md) | 每次同步的版本、日期与变更条目。 |
 
