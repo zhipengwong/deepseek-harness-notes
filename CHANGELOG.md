@@ -2,6 +2,13 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.16.0 — 2026-11-27
+
+- 新增第 7 讲讲义 `docs/course/lecture-7-process-transport.md`。正文按五节展开一个启动器与多个 profile、协议入口三条纪律、Remote 投影三规定、Connection 独占物理连接、双工流与三类恢复规则，附 29 个源码落点链接、结构配图、平台取舍、四条动手任务与五道小测题目。小测批改留在实践篇，讲义只留题目。
+- 新增配套配图 `docs/course/lecture-7-process-transport.svg`，展示命令行与本地 HTTP 两个入口共用同一份方法清单和共享核心。
+- 源码落点全部指向基线 commit `4b399c39` 的真实文件与行号。脱敏扫描无命中，正文无破折号与分号。
+- README 资料索引补第 7 讲讲义条目。按每讲流程，本步只推讲义，第 7 讲实践篇待实践阶段完成后单独推送。
+
 ## v0.15.0 — 2026-11-26
 
 - 新增第 6 讲课程代码 `mini-harness/lecture-6/`。`seam_core.py` 实现 Context 服务键装配与重复注册拒绝、`ShellExecutor` 约定与两个 Provider、只注入服务键的 `BashTool` Consumer、独立模型 schema 与约定类型断言。`demo.py` 四场景对应讲义四条动手任务。只用标准库，离线运行。

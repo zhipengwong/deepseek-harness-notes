@@ -57,6 +57,7 @@
 | [第 5 讲：实践篇](docs/course/lecture-5-practice.md) | 链路走查与实测记录。三张脱敏图逐环节核对工具注册、审批闸门与调度回灌，五道小测的作答判定，四个场景的实测输出与验收。代码链接见该篇开头。 |
 | [第 6 讲：能力 seam，换实现不改接口，怎么切](docs/course/lecture-6-capability-seam.md) | 第三段机制篇第五讲。约定、实现与消费方三种变化，Service Definition、Service Provider 与 Consumer 三角色，shell 三件套落地，不预防性拆分与权限能力的区分，含源码落点与平台取舍。 |
 | [第 6 讲：实践篇](docs/course/lecture-6-practice.md) | 作答判定与实测记录。五道小测的逐题批改，四个场景的实测输出与解读，服务键装配、重复注册拒绝、换实现不改 Consumer、约定断言与反例。代码链接见该篇开头。 |
+| [第 7 讲：进程与通信形态，同一套核心怎么变成多种产品](docs/course/lecture-7-process-transport.md) | 第三段机制篇第六讲。一个启动器与多个 profile、协议入口三条纪律、Remote 投影与 descriptor 本地性、Connection 独占物理连接、双工流与三类恢复规则，含源码落点与平台取舍。 |
 | [源码基线与复现](meta/sources.md) | 上游地址、界面版本、分析基线 commit、复现命令、API 一手文档链接。 |
 | [版本记录](CHANGELOG.md) | 每次同步的版本、日期与变更条目。 |
 
