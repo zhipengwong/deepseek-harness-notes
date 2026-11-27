@@ -2,6 +2,12 @@
 
 格式遵循 Keep a Changelog。版本规则见 `AGENTS.md`。
 
+## v0.17.0 — 2026-11-27
+
+- 新增第 7 讲课程代码 `mini-harness/lecture-7/`。`harness_core.py` 实现共享核心与一份 `ALLOWED` 清单，`connection.py` 独占 rpcId、信封与两个载体，`cli.py` 与 `remote.py` 分别给出命令行与本地 HTTP 入口，`demo.py` 四个场景对应讲义四条动手任务。只用标准库，离线运行。
+- 第 7 讲实践篇补入代码文件表与动手实测章节，贴出四个场景的真实输出并逐场景解读，验收表与事实边界齐备。实测中修正两处：Connection 诊断起初写 stdout 污染结果通道，改为写 stderr；stderr 无缓冲导致诊断行乱序，演示脚本改为就地捕获后按场景打印。四个代码块与 demo 复跑逐字一致。
+- README 资料索引补第 7 讲实践篇条目。按每讲流程第五步推送实践篇与代码，讲义已在 v0.16.0 推送。
+
 ## v0.16.0 — 2026-11-27
 
 - 新增第 7 讲讲义 `docs/course/lecture-7-process-transport.md`。正文按五节展开一个启动器与多个 profile、协议入口三条纪律、Remote 投影三规定、Connection 独占物理连接、双工流与三类恢复规则，附 29 个源码落点链接、结构配图、平台取舍、四条动手任务与五道小测题目。小测批改留在实践篇，讲义只留题目。
