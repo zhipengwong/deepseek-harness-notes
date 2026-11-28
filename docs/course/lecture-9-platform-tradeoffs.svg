@@ -1,0 +1,67 @@
+<svg width="1440" height="620" viewBox="0 0 720 310" xmlns="http://www.w3.org/2000/svg">
+<title>八讲机制到平台取舍的映射</title>
+<desc>左列是八讲机制，中间是事实源、顺序、失败关闭三条不变量组成的地基，右列是平台侧隔离、幂等、证据链三个放大问题。机制经过地基筛选才变成平台能力，未经过筛选的进入待定栏。</desc>
+<rect x="0" y="0" width="720" height="310" fill="#FFFFFF"/>
+<g font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+
+<text x="112" y="24" font-size="13" font-weight="600" fill="#3A3A38" text-anchor="middle">课程机制</text>
+<text x="360" y="24" font-size="13" font-weight="600" fill="#3A3A38" text-anchor="middle">三条不变量（地基）</text>
+<text x="610" y="24" font-size="13" font-weight="600" fill="#3A3A38" text-anchor="middle">平台放大问题</text>
+
+<rect x="26" y="38" width="172" height="30" rx="7" fill="#EAF2FE" stroke="#9CC2F0" stroke-width="0.6"/>
+<text x="112" y="53" font-size="11" fill="#174A8B" text-anchor="middle" dominant-baseline="central">循环与状态机</text>
+<rect x="26" y="74" width="172" height="30" rx="7" fill="#F1EDFA" stroke="#C6B9E8" stroke-width="0.6"/>
+<text x="112" y="89" font-size="11" fill="#574197" text-anchor="middle" dominant-baseline="central">插件化</text>
+<rect x="26" y="110" width="172" height="30" rx="7" fill="#E7F4EE" stroke="#96CBAE" stroke-width="0.6"/>
+<text x="112" y="125" font-size="11" fill="#1E6B45" text-anchor="middle" dominant-baseline="central">Session 日志</text>
+<rect x="26" y="146" width="172" height="30" rx="7" fill="#FDF1DE" stroke="#EBC684" stroke-width="0.6"/>
+<text x="112" y="161" font-size="11" fill="#8A5A16" text-anchor="middle" dominant-baseline="central">工具闸门</text>
+<rect x="26" y="182" width="172" height="30" rx="7" fill="#EEF3F7" stroke="#B9CBD9" stroke-width="0.6"/>
+<text x="112" y="197" font-size="11" fill="#2C5876" text-anchor="middle" dominant-baseline="central">能力 seam</text>
+<rect x="26" y="218" width="172" height="30" rx="7" fill="#E7F5F6" stroke="#A8D4D8" stroke-width="0.6"/>
+<text x="112" y="233" font-size="11" fill="#26656E" text-anchor="middle" dominant-baseline="central">进程与通信</text>
+
+<rect x="272" y="52" width="176" height="52" rx="9" fill="#F0F7F3" stroke="#9ECDB4" stroke-width="0.7"/>
+<text x="360" y="70" font-size="12" font-weight="600" fill="#1E6B45" text-anchor="middle" dominant-baseline="central">事实源</text>
+<text x="360" y="88" font-size="10" fill="#3D855F" text-anchor="middle" dominant-baseline="central">可见即落日志</text>
+
+<rect x="272" y="118" width="176" height="52" rx="9" fill="#F0F7F3" stroke="#9ECDB4" stroke-width="0.7"/>
+<text x="360" y="136" font-size="12" font-weight="600" fill="#1E6B45" text-anchor="middle" dominant-baseline="central">顺序</text>
+<text x="360" y="154" font-size="10" fill="#3D855F" text-anchor="middle" dominant-baseline="central">先入日志再执行</text>
+
+<rect x="272" y="184" width="176" height="52" rx="9" fill="#FDEDED" stroke="#EEB9B9" stroke-width="0.7"/>
+<text x="360" y="202" font-size="12" font-weight="600" fill="#9C3333" text-anchor="middle" dominant-baseline="central">失败关闭</text>
+<text x="360" y="220" font-size="10" fill="#B85A5A" text-anchor="middle" dominant-baseline="central">无人认领即拒绝</text>
+
+<rect x="522" y="52" width="176" height="52" rx="9" fill="#EAF2FE" stroke="#9CC2F0" stroke-width="0.6"/>
+<text x="610" y="70" font-size="12" font-weight="600" fill="#174A8B" text-anchor="middle" dominant-baseline="central">隔离</text>
+<text x="610" y="88" font-size="10" fill="#3A6DB0" text-anchor="middle" dominant-baseline="central">一任务一沙箱</text>
+
+<rect x="522" y="118" width="176" height="52" rx="9" fill="#EAF2FE" stroke="#9CC2F0" stroke-width="0.6"/>
+<text x="610" y="136" font-size="12" font-weight="600" fill="#174A8B" text-anchor="middle" dominant-baseline="central">幂等</text>
+<text x="610" y="154" font-size="10" fill="#3A6DB0" text-anchor="middle" dominant-baseline="central">重复投递不重做</text>
+
+<rect x="522" y="184" width="176" height="52" rx="9" fill="#EAF2FE" stroke="#9CC2F0" stroke-width="0.6"/>
+<text x="610" y="202" font-size="12" font-weight="600" fill="#174A8B" text-anchor="middle" dominant-baseline="central">证据链</text>
+<text x="610" y="220" font-size="10" fill="#3A6DB0" text-anchor="middle" dominant-baseline="central">可回放可举证</text>
+
+<line x1="198" y1="125" x2="272" y2="78" stroke="#9B9A95" stroke-width="1.1"/>
+<path d="M272 78 l-8 -2 l3 8 z" fill="#9B9A95"/>
+<line x1="198" y1="125" x2="272" y2="144" stroke="#9B9A95" stroke-width="1.1"/>
+<path d="M272 144 l-8 -1 l4 7 z" fill="#9B9A95"/>
+<line x1="198" y1="161" x2="272" y2="210" stroke="#9B9A95" stroke-width="1.1"/>
+<path d="M272 210 l-8 -2 l2 8 z" fill="#9B9A95"/>
+
+<line x1="448" y1="78" x2="522" y2="78" stroke="#9B9A95" stroke-width="1.1"/>
+<path d="M522 78 l-8 -4 l0 8 z" fill="#9B9A95"/>
+<line x1="448" y1="144" x2="522" y2="144" stroke="#9B9A95" stroke-width="1.1"/>
+<path d="M522 144 l-8 -4 l0 8 z" fill="#9B9A95"/>
+<line x1="448" y1="210" x2="522" y2="210" stroke="#9B9A95" stroke-width="1.1"/>
+<path d="M522 210 l-8 -4 l0 8 z" fill="#9B9A95"/>
+
+<rect x="26" y="264" width="672" height="32" rx="7" fill="#F5F4F0" stroke="#D6D3CA" stroke-width="0.6"/>
+<text x="362" y="280" font-size="11" fill="#5F5E5A" text-anchor="middle" dominant-baseline="central">未经过地基筛选的机制进入待定栏，等真实任务把它变成触发条件，不提前写进清单。</text>
+
+<text x="362" y="298" font-size="10" fill="#8A8985" text-anchor="middle">缺了会出事、一定会换的先补。只有一种实现、判断不明的先等。</text>
+</g>
+</svg>
